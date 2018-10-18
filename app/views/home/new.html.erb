@@ -1,0 +1,34 @@
+<header>
+  <div class="header-logo">
+
+  </div>
+  <ul class="header-menus">
+    <li></li>
+  </ul>
+</header>
+
+<head>
+</head>
+<body>
+  <h1>Poker</h1>
+  <p>あああ</p>
+  <%#= image_tag 'top_background' %>
+  <div class="form">
+    <div class="form-body">
+      <%= form_for @card_form, url: judge_url do |f| %>
+        <%= f.text_field :hands %>
+        <%= f.submit '判定' %>
+      <% end %>
+      <%= flash[:hands] %>
+    </div>
+  </div>
+</body>
+
+
+
+
+<!--    <textarea></textarea>-->
+<!--    <input type="submit" value="Check">-->
+<!--    #{name}結果表示したい-->
+<!--  </div>-->
+<!--</div>-->
