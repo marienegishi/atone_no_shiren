@@ -38,9 +38,6 @@ class CardForm
 
     #役の判断。大きい順に行う。
    def judge
-      #return "aaa"
-      #puts "文字列を入力してください(例：S8 S7 H6 H5 S4)"　←　コピペしたけど多分いらん。
-
       #半角空白で文字列を分割し、配列を返す。
       hands = @hands.split
       #それそれのカードから、スートの部分だけ、数字の部分だけを取り出した配列を別に作る。
@@ -53,14 +50,31 @@ class CardForm
       end
 
       def same_number_counts
-        @numbers.group_by { |r| r }.map(&:size).sort.reverse
+        same_numbers = @numbers.group_by{|r|r}.values
+        same_numbers.map(&:size).sort.reverse
+
+       # #@numbers.group_by(&:itself).map { |k,v| [k, v.count] }.to_h.sort.reverse
+        #@numbers.group_by { |r| r[0]}.map{|r|r.size}.sort.reverse
       end
 
       # 数が連続してる
       def straight?
-        sorted = @numbers.sort #.sortは順番を正す
-        steps = sorted.map { |r| r - sorted[0] }
-        steps == [0, 1, 2, 3, 4] || steps == [0, 9, 10, 11, 12]
+        straight_numbers = @numbers.sort
+        if straight_numbers[1] == straight_numbers[0]+1 && straight_numbers[2] == straight_numbers[0]+2 && straight_numbers[3] == straight_numbers[0]+3 && straight_numbers[4] == straight_numbers[0]+4
+          true
+        elsif straight_numbers == [1, 10, 11, 12, 13]
+          true
+        else
+          false
+        end
+
+       # straight_numbers[1] == straight_numbers[0]+1 && straight_numbers[2] == straight_numbers[0]+2 && straight_numbers[3] == straight_numbers[0]+3 && straight_numbers[4] == straight_numbers[0]+4 || straight_numbers == [1, 10, 11, 12, 13]
+        #steps = @numbers.map{|r|r-@numbers[0]}
+        #steps==[0,1,2,3,4] || steps==[0,9,10,11,12]
+        # sorted = @numbers.sort #.sortは順番を正す
+        # steps = sorted.map { |r| r - sorted[0] }
+        # #steps = sorted.map  { |k,v| [k, v.count - sorted[0]] }
+        # steps == [0, 1, 2, 3, 4] || steps == [0, 9, 10, 11, 12]
       end
 
       # 同じスートが１組以上ある
@@ -69,16 +83,16 @@ class CardForm
       end
 
       case same_number_counts
-      when [4, 1]
-        YAKU[7]
-      when [3, 2]
-        YAKU[6]
-      when [3, 1, 1]
-        YAKU[3]
-      when [2, 2, 1]
-        YAKU[2]
       when [2, 1, 1, 1]
         YAKU[1]
+      when [2, 2, 1]
+        YAKU[2]
+      when [3, 1, 1]
+        YAKU[3]
+      when [3, 2]
+        YAKU[6]
+      when [4, 1]
+        YAKU[7]
       else
         case [straight?, flush?]
         when [true, false]
@@ -86,14 +100,16 @@ class CardForm
         when [false, true]
           YAKU[5]
         when [true, true]
-          if @numbers == [1, 10, 11, 12, 13]
+         # if @numbers == [1, 10, 11, 12, 13] #koko
             YAKU[8]
-          end
         else
           YAKU[0]
         end
       end
-    end
+   end
+
+
+
   # def end_program
   #   exit
   # end
@@ -118,5 +134,4 @@ class CardForm
   #     exception
   #   end
   # end
-end
-
+   end
