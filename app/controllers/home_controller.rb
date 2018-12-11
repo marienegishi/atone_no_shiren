@@ -11,7 +11,6 @@ class HomeController < ApplicationController
     @card_form = CardForm.new(hands)
 
     if @card_form.valid?
-      #flash[:hands] = @card_form.valid?
       flash[:hands] = @card_form.judge
     else
       flash[:hands] = @card_form.error_messages
